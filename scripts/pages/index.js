@@ -11,7 +11,7 @@ import {
 } from '../utils/filter.js';
 
 const getRecipes = async () => {
-    const response = await fetch('../../data/recipes.json');
+    const response = await fetch('./data/recipes.json');
     const recipes = await response.json();
     return recipes;
 };
