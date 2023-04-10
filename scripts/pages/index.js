@@ -8,16 +8,18 @@ import {
 import {
     filterBySearching,
     filterByTag,
+    buildSuffixTrie,
 } from '../utils/filter.js';
 
 const getRecipes = async () => {
-    const response = await fetch('../../data/recipes.js');
+    const response = await fetch('../../data/recipes.json');
     const recipes = await response.json();
     return recipes;
 };
 
 const init = async () => {
     const { recipes } = await getRecipes();
+    const trie = buildSuffixTrie(recipes);
     dropdownfilter(tabfilter);
     getAdvanceTags(recipes);
     displayData(recipes);
@@ -30,7 +32,7 @@ const init = async () => {
         let resulttag = recipes;
         let result = recipes;
 
-        if (word.length > 2) resultsearch = filterBySearching(result, word);
+        if (word.length > 2) resultsearch = filterBySearching(result, word, trie);
 
         resulttag = filterByTag(result);
 
