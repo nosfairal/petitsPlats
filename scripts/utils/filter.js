@@ -1,47 +1,47 @@
-import { Trie } from '../Trie.js'
-function checkIngredient(r, word) {
-    let check = false;
-    r.ingredients.forEach(({ ingredient }) => {
-        if (ingredient.replace(/\s+/g, '').toLowerCase().includes(word)) {
-            check = true;
-        }
-    });
-    return check;
-}
+// import { Trie } from '../Trie.js'
+// function checkIngredient(r, word) {
+//     let check = false;
+//     r.ingredients.forEach(({ ingredient }) => {
+//         if (ingredient.replace(/\s+/g, '').toLowerCase().includes(word)) {
+//             check = true;
+//         }
+//     });
+//     return check;
+// }
 
 // A function that check ingredients of a recipe
-function checkUstensil(r, word) {
-    let check = false;
-    r.ustensils.forEach((ustensil) => {
-        if (ustensil.replace(/\s+/g, '').toLowerCase().includes(word)) {
-            check = true;
-        }
-    });
-    return check;
-}
+// function checkUstensil(r, word) {
+//     let check = false;
+//     r.ustensils.forEach((ustensil) => {
+//         if (ustensil.replace(/\s+/g, '').toLowerCase().includes(word)) {
+//             check = true;
+//         }
+//     });
+//     return check;
+// }
 
-function generateTrigrams(text) {
-    const trigrams = new Set();
-    const input = text.toLowerCase();
+// function generateTrigrams(text) {
+//     const trigrams = new Set();
+//     const input = text.toLowerCase();
 
-    for (let i = 0; i < input.length - 2; i++) {
-        trigrams.add(input.substr(i, 3));
-    }
+//     for (let i = 0; i < input.length - 2; i++) {
+//         trigrams.add(input.substr(i, 3));
+//     }
 
-    return trigrams;
-}
-function buildSuffixTrie(recipes) {
-    const trie = new Trie();
+//     return trigrams;
+// }
+// function buildSuffixTrie(recipes) {
+//     const trie = new Trie();
 
-    for (const recipe of recipes) {
-        const name = recipe.name.toLowerCase();
-        for (let i = 0; i < name.length; i++) {
-            trie.insert(name.slice(i));
-        }
-    }
+//     for (const recipe of recipes) {
+//         const name = recipe.name.toLowerCase();
+//         for (let i = 0; i < name.length; i++) {
+//             trie.insert(name.slice(i));
+//         }
+//     }
 
-    return trie;
-}
+//     return trie;
+// }
 
 // V2) A function that filter by word in searchbar
 // function filterBySearching(data, query) {
@@ -64,33 +64,33 @@ function buildSuffixTrie(recipes) {
 //         return keywords.every(keyword => itemName.includes(keyword));
 //     });
 // }
-function levenshteinDistance(a, b) {
-    const matrix = [];
+// function levenshteinDistance(a, b) {
+//     const matrix = [];
 
-    for (let i = 0; i <= b.length; i++) {
-        matrix[i] = [i];
-    }
+//     for (let i = 0; i <= b.length; i++) {
+//         matrix[i] = [i];
+//     }
 
-    for (let j = 0; j <= a.length; j++) {
-        matrix[0][j] = j;
-    }
+//     for (let j = 0; j <= a.length; j++) {
+//         matrix[0][j] = j;
+//     }
 
-    for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j] + 1
-                );
-            }
-        }
-    }
+//     for (let i = 1; i <= b.length; i++) {
+//         for (let j = 1; j <= a.length; j++) {
+//             if (b.charAt(i - 1) === a.charAt(j - 1)) {
+//                 matrix[i][j] = matrix[i - 1][j - 1];
+//             } else {
+//                 matrix[i][j] = Math.min(
+//                     matrix[i - 1][j - 1] + 1,
+//                     matrix[i][j - 1] + 1,
+//                     matrix[i - 1][j] + 1
+//                 );
+//             }
+//         }
+//     }
 
-    return matrix[b.length][a.length];
-}
+//     return matrix[b.length][a.length];
+// }
 
 // function filterBySearching(data, query, trie) {
 //     const keywords = query.toLowerCase().split(/\s+/);
@@ -108,41 +108,74 @@ function levenshteinDistance(a, b) {
 //         });
 //     });
 // }
-function filterBySearching(data, query) {
-    const keywords = query.toLowerCase().split(/\s+/);
-    const maxDistance = 3;
+// function filterBySearching(data, query) {
+//     const keywords = query.toLowerCase().split(/\s+/);
+//     const maxDistance = 3;
 
-    return data.filter(item => {
-        const itemName = item.name.toLowerCase();
-        const ingredients = item.ingredients.map(i => i.ingredient.toLowerCase());
-        const ustensils = item.ustensils.map(u => u.toLowerCase());
+//     return data.filter(item => {
+//         const itemName = item.name.toLowerCase();
+//         const ingredients = item.ingredients.map(i => i.ingredient.toLowerCase());
+//         const ustensils = item.ustensils.map(u => u.toLowerCase());
 
-        return keywords.every(keyword => {
-            return (
-                levenshteinDistance(itemName, keyword) <= maxDistance ||
-                ingredients.some(
-                    ingredient => levenshteinDistance(ingredient, keyword) <= maxDistance
-                ) ||
-                ustensils.some(
-                    ustensil => levenshteinDistance(ustensil, keyword) <= maxDistance
-                )
-            );
-        });
-    });
+//         return keywords.every(keyword => {
+//             return (
+//                 levenshteinDistance(itemName, keyword) <= maxDistance ||
+//                 ingredients.some(
+//                     ingredient => levenshteinDistance(ingredient, keyword) <= maxDistance
+//                 ) ||
+//                 ustensils.some(
+//                     ustensil => levenshteinDistance(ustensil, keyword) <= maxDistance
+//                 )
+//             );
+//         });
+//     });
+// }
+
+// // A function tha filter by tags of a recipes
+// function filterByTag(recipes) {
+//     const tagselected = document.querySelectorAll('.tag-selected');
+//     let filteredrecipes = recipes;
+
+//     tagselected.forEach((tag) => {
+//         const word = tag.innerText.replace(/\s+/g, '').toLowerCase();
+//         filteredrecipes = filteredrecipes.filter(
+//             (r) => checkIngredient(r, word) || checkUstensil(r, word) || r.appliance.replace(/\s+/g, '').toLowerCase().includes(word),
+//         );
+//     });
+//     return filteredrecipes;
+// }
+
+// export { filterBySearching, filterByTag, buildSuffixTrie };
+
+// V2) Une fonction qui vérifie si un mot est inclus dans un élément de la liste
+const checkWordInList = (list, word) =>
+    list.some((item) =>
+        item.replace(/\s+/g, "").toLowerCase().includes(word)
+    );
+
+// V2) Une fonction qui filtre par mot dans la barre de recherche
+function filterBySearchingFunctional(recipes, word) {
+    const wordCompared = word.replace(/\s+/g, "").toLowerCase();
+    return recipes.filter((r) =>
+        checkWordInList(r.ingredients.map(({ ingredient }) => ingredient), wordCompared) ||
+        r.name.replace(/\s+/g, "").toLowerCase().includes(wordCompared) ||
+        r.description.replace(/\s+/g, "").toLowerCase().includes(wordCompared)
+    );
 }
 
-// A function tha filter by tags of a recipes
-function filterByTag(recipes) {
-    const tagselected = document.querySelectorAll('.tag-selected');
-    let filteredrecipes = recipes;
-
-    tagselected.forEach((tag) => {
-        const word = tag.innerText.replace(/\s+/g, '').toLowerCase();
-        filteredrecipes = filteredrecipes.filter(
-            (r) => checkIngredient(r, word) || checkUstensil(r, word) || r.appliance.replace(/\s+/g, '').toLowerCase().includes(word),
+// V2) Une fonction qui filtre par tags d'une recette
+function filterByTagFunctional(recipes) {
+    const tagselected = Array.from(document.querySelectorAll(".tag-selected"));
+    const filteredrecipes = tagselected.reduce((acc, tag) => {
+        const word = tag.innerText.replace(/\s+/g, "").toLowerCase();
+        return acc.filter(
+            (r) =>
+                checkWordInList(r.ingredients.map(({ ingredient }) => ingredient), word) ||
+                checkWordInList(r.ustensils, word) ||
+                r.appliance.replace(/\s+/g, "").toLowerCase().includes(word)
         );
-    });
+    }, recipes);
     return filteredrecipes;
 }
 
-export { filterBySearching, filterByTag, buildSuffixTrie };
+export { filterBySearchingFunctional as filterBySearching, filterByTagFunctional as filterByTag };
